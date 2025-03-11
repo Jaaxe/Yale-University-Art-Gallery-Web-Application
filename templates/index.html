@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>YUAG Collection Search</title>
+   </head>
 
+   <body>
+        <h1>YUAG Collection Search</h1>
+
+        <form action="/search" method="GET">
+            <label>Label:</label>
+            <input type="text" name="l" value="{{ last_label|e }}">
+
+            <label>Classifier:</label>
+            <input type="text" name="c" value="{{ last_classifier|e }}">
+
+            <label>Agent:</label>
+            <input type="text" name="a" value="{{ last_agent|e }}">
+
+            <label>Date:</label>
+            <input type="text" name="d" value="{{ last_date|e }}">
+
+            <button type="submit">Search</button>
+        </form>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        
+        {% if results %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Date</th>
+                        <th>Agents</th>
+                        <th>Classified As</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in results %}
+                    <tr>
+                        <td>
+                            <a href="/obj/{{ obj[0]|e }}">
+                                {{ obj[1]|e }}
+                            </a>
+                        </td>
+                        <td>{{ obj[2]|e }}</td>
+                        <td>
+                            {% if obj[3] %}
+                                {{obj[3].replace(',', '<br>') | safe |e}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if obj[4] %}
+                                {{obj[4].replace('||', '<br>') | safe |e}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+   </body>
+</html>
