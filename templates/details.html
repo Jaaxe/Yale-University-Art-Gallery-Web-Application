@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Object {{ obj_id|e }}</title>
+    </head>
 
+    <body>
+        <h1>Object {{ obj_id|e }}</h1>
+
+        <h2>Summary</h2>
+        <table border="1">
+            <tr><th>Accession no.</th><td>{{ accession_no|e }}</td></tr>
+            <tr><th>Date</th><td>{{ date_val|e }}</td></tr>
+            <tr><th>Place</th><td>{{ places_formatted|e }}</td></tr>
+            <tr><th>Department</th><td>{{ department_str|e }}</td></tr>
+        </table>
+
+        <h2>Label</h2>
+        <p>{{ label|e }}</p>
+
+        <h2>Produced By</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Part</th>
+                    <th>Name</th>
+                    <th>Timespan</th>
+                    <th>Nationalities</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for part, name_val, timespan, nats in produced_by %}
+                <tr>
+                    <td>{{ part|e }}</td>
+                    <td>{{ name_val|e }}</td>
+                    <td>{{ timespan|e }}</td>
+                    <td>{{ nats|e }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if image_url %}
+        <h2>Image</h2>
+        <img 
+            src="{{ image_url }}" 
+            alt="Image of object {{ obj_id|e }}"
+            style="max-width: 800px; max-height: 600px;">
+        {% endif %}
+
+        <h2>Classified As</h2>
+        <ul>
+            {% for cls_name in classifications %}
+            <li>{{ cls_name|e }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Information</h2>
+        <ul>
+            {% for r_type, r_content in references %}
+            <li><strong>{{ r_type|e }}:</strong> {{ r_content|safe }}</li>
+            {% endfor %}
+        </ul>
+
+        <p><a href="/">Return to previous search</a></p>
+    </body>
+</html>
